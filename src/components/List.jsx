@@ -1,21 +1,19 @@
 import dayjs from "dayjs";
 import Button from "./Button";
+import Form from "../components/Form";
 
-import { useEffect, useState } from "react";
+import { connect } from "react-redux";
+
+import { useEffect, useState, useRef } from "react";
 import Accordion from "./Accordion";
 
-export default function List({
-  tasks,
-  headerContent,
-  handleForm,
-  deleteTask,
-  manageTaskStatus,
-}) {
+const List = ({ tasks, manageTaskStatus, deleteTask }) => {
   const prioritys = ["All", "High", "Medium", "Low"];
   const [priority, setpriority] = useState("All");
   const [data, setData] = useState([]);
   const [dueDate, setDueDate] = useState(false);
   const [openAccordionIndex, setOpenAccordionIndex] = useState(null);
+  const formRef = useRef(null);
 
   useEffect(() => {
     if (priority === "All") {
@@ -29,6 +27,10 @@ export default function List({
     setOpenAccordionIndex((currentValue) =>
       currentValue === index ? null : index
     );
+  };
+
+  const handleForm = (task = null) => {
+    formRef.current.openForm(task);
   };
 
   function setPriorityWiseData(e) {
@@ -178,6 +180,7 @@ export default function List({
 
   return (
     <>
+      <Form ref={formRef}></Form>
       <div className="d-flex justify-content-between mb-2">
         <div className="d-flex gap-2">
           <div>
@@ -210,9 +213,27 @@ export default function List({
             </div>
           </div>
         </div>
-        <div>{headerContent}</div>
+        <div>
+          <Button
+            className="btn btn-outline-secondary"
+            onClick={() => handleForm()}
+          >
+            Add
+          </Button>
+        </div>
       </div>
       {!dueDate ? list() : dueDateList()}
     </>
   );
-}
+};
+
+const mapStateToProps = (state) => ({
+  tasks: state.tasks,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  manageTaskStatus: (id) => dispatch({ type: "manageTaskStatus", id: id }),
+  deleteTask: (id) => dispatch({ type: "deleteTask", id: id }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

@@ -17,7 +17,6 @@ const Modal = forwardRef(({ title, bodyContent, footerContent }, ref) => {
   }, []);
 
   function closeModal() {
-    console.log(1);
     bootstrapModel.hide();
   }
 

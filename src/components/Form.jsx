@@ -5,6 +5,8 @@ import Button from "./Button";
 import Input from "./Input";
 import TextEditor from "./TextEditor";
 
+import { connect } from "react-redux";
+
 const Form = forwardRef(({ manageTask }, ref) => {
   const modalRef = useRef(null);
   const [detail, setDetail] = useState({
@@ -60,14 +62,6 @@ const Form = forwardRef(({ manageTask }, ref) => {
             value={detail.description}
             onChange={handleTextEditor}
           ></TextEditor>
-          {/* <textarea
-            className="form-control"
-            aria-label="With textarea"
-            onChange={handleInput}
-            id="exampleInputDescription"
-            name="description"
-            value={detail.description}
-          ></textarea> */}
           <Input
             label="Date"
             type="date"
@@ -127,4 +121,14 @@ const Form = forwardRef(({ manageTask }, ref) => {
   );
 });
 
-export default Form;
+const mapStateToProps = (state) => ({
+  tasks: state.tasks,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  manageTask: (detail) => dispatch({ type: "manageTask", task: detail }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  forwardRef: true,
+})(Form);
