@@ -1,12 +1,15 @@
-import { forwardRef, useImperativeHandle, useState, useRef } from "react";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import Modal from "./Modal";
 import Button from "./Button";
 import Input from "./Input";
 import TextEditor from "./TextEditor";
+import Body from "./Body";
 
-const Form = forwardRef(({ manageTask }, ref) => {
-  const modalRef = useRef(null);
+export default function PageForm() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [detail, setDetail] = useState({
     id: Date.now(),
     title: "",
@@ -16,17 +19,25 @@ const Form = forwardRef(({ manageTask }, ref) => {
     completed: false,
   });
 
-  useImperativeHandle(ref, () => ({
-    openForm(task) {
-      resetTask();
-      if (task) {
-        setDetail(task);
-      }
-      modalRef.current.openModal();
-    },
-  }));
+  useEffect(() => {
+    resetTask();
+    if (location.state) {
+      setDetail(location.state);
+    }
+  }, []);
 
   const prioritys = ["High", "Medium", "Low"];
+
+  function resetTask() {
+    setDetail({
+      id: Date.now(),
+      title: "",
+      description: "<p>Write Description</p>",
+      priority: "",
+      date: dayjs().format("YYYY-MM-DD"),
+      completed: false,
+    });
+  }
 
   function handleInput(e) {
     setDetail({
@@ -42,9 +53,13 @@ const Form = forwardRef(({ manageTask }, ref) => {
     });
   }
 
-  const form = () => {
-    return (
-      <>
+  function handleSubmit() {
+    navigate("/", { state: { detail: detail } });
+  }
+
+  return (
+    <>
+      <Body cardClass="m-3" title="Add New Task">
         <div className="mb-3">
           <Input
             label="Title"
@@ -60,14 +75,6 @@ const Form = forwardRef(({ manageTask }, ref) => {
             value={detail.description}
             onChange={handleTextEditor}
           ></TextEditor>
-          {/* <textarea
-            className="form-control"
-            aria-label="With textarea"
-            onChange={handleInput}
-            id="exampleInputDescription"
-            name="description"
-            value={detail.description}
-          ></textarea> */}
           <Input
             label="Date"
             type="date"
@@ -94,37 +101,9 @@ const Form = forwardRef(({ manageTask }, ref) => {
               </option>
             ))}
           </select>
+          <Button onClick={handleSubmit}>Save</Button>
         </div>
-      </>
-    );
-  };
-
-  function handleSubmit() {
-    manageTask(detail);
-    modalRef.current.closeModal();
-  }
-
-  function resetTask() {
-    setDetail({
-      id: Date.now(),
-      title: "",
-      description: "<p>Write Description</p>",
-      priority: "",
-      date: dayjs().format("YYYY-MM-DD"),
-      completed: false,
-    });
-  }
-
-  return (
-    <Modal
-      ref={modalRef}
-      title="ToDo Form"
-      bodyContent={form}
-      footerContent={() => {
-        return <Button onClick={handleSubmit}>Save</Button>;
-      }}
-    />
+      </Body>
+    </>
   );
-});
-
-export default Form;
+}
