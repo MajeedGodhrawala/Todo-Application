@@ -1,13 +1,12 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Body from "../components/Body";
+import Button from "../components/Button";
+import Form from "../components/Form";
 import List from "../components/List";
 import Card from "../components/Card";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function App() {
-  const location = useLocation();
-  const navigate = useNavigate();
-
+  const formRef = useRef(null);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -75,12 +74,9 @@ export default function App() {
     },
   ]);
 
-  useEffect(() => {
-    if (location.state && location.state.detail) {
-      manageTask(location.state.detail);
-      navigate(location.pathname, { replace: true, state: null });
-    }
-  }, [location.state, navigate]);
+  const handleForm = (task = null) => {
+    formRef.current.openForm(task);
+  };
 
   function manageTask(task) {
     const myTask = [...tasks];
@@ -129,14 +125,22 @@ export default function App() {
             </div>
           </Card>
         </div>
-
+        <Form
+          ref={formRef}
+          manageTask={manageTask}
+          lastId={tasks[tasks.length - 1]?.id}
+        ></Form>
         <List
           tasks={tasks}
           headerContent={
-            <Link to="/Form" className="btn btn-outline-secondary">
+            <Button
+              className="btn btn-outline-secondary"
+              onClick={() => handleForm()}
+            >
               Add
-            </Link>
+            </Button>
           }
+          handleForm={handleForm}
           deleteTask={deleteTask}
           manageTaskStatus={manageTaskStatus}
         ></List>

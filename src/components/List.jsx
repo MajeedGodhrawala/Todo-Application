@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import Button from "./Button";
-import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import Accordion from "./Accordion";
@@ -8,6 +7,7 @@ import Accordion from "./Accordion";
 export default function List({
   tasks,
   headerContent,
+  handleForm,
   deleteTask,
   manageTaskStatus,
 }) {
@@ -83,13 +83,12 @@ export default function List({
             aria-label="Basic outlined example"
           >
             {!task.completed ? (
-              <Link
-                to="/form"
-                state={task}
+              <Button
                 className="btn btn-outline-secondary"
+                onClick={() => handleForm(task)}
               >
                 Edit
-              </Link>
+              </Button>
             ) : (
               ""
             )}
