@@ -1,9 +1,5 @@
-import { useRef, useState } from "react";
 import Body from "../components/Body";
-import Button from "../components/Button";
 import Records from "../components/Records";
-import Card from "../components/Card";
-import { connect } from "react-redux";
 import Summery from "./Summery";
 
 const Dashboard = () => {
