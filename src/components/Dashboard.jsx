@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import Body from "../components/Body";
 import Button from "../components/Button";
-import List from "../components/List";
+import Records from "../components/Records";
 import Card from "../components/Card";
 import { connect } from "react-redux";
 import Summery from "./Summery";
@@ -15,8 +15,7 @@ const Dashboard = () => {
         subTitle="Here's a list of your tasks!"
       >
         <Summery></Summery>
-
-        <List></List>
+        <Records></Records>
       </Body>
     </>
   );
