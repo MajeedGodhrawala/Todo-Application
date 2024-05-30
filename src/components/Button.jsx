@@ -4,7 +4,14 @@ export default function Button({
   children,
 }) {
   return (
-    <button type="button" className={className} onClick={onClick}>
+    <button
+      type="button"
+      className={className}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+    >
       {children}
     </button>
   );

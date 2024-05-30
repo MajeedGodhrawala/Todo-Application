@@ -1,9 +1,9 @@
-export default function Card({ extraClass, children, title }) {
+export default function Card({ style, className, children, title }) {
   return (
     <>
-      <div className={`shadow-sm mb-3 bg-body-tertiary rounded ${extraClass}`}>
+      <div style={style} className={className}>
         <div className="card-body">
-          <h5 className="card-title">{title}</h5>
+          {title ? <h5 className="card-title">{title}</h5> : ""}
           <div className="card-text">{children}</div>
         </div>
       </div>

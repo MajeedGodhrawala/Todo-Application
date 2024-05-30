@@ -12,7 +12,7 @@ export default function Accordion({
       <div className="border rounded mb-2">
         <div
           onClick={onClick}
-          className="d-flex justify-content-between flex-fill border-bottom p-2"
+          className="d-flex flex-sm-row flex-column justify-content-between flex-fill border-bottom p-2"
         >
           <div>
             <span className={"border rounded border-secondary pe-2 ps-2 "}>
