@@ -20,14 +20,14 @@ const Records = ({ tasks, manageTaskStatus, deleteTask }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState(2);
 
-  let x = window.matchMedia("(max-width: 575px)");
+  let width = window.matchMedia("(max-width: 575px)");
 
   useEffect(() => {
-    setMobileView(x.matches);
-  }, [x.matches]);
+    setMobileView(width.matches);
+  }, [width.matches]);
 
-  x.addEventListener("change", function () {
-    setMobileView(x.matches);
+  width.addEventListener("change", function () {
+    setMobileView(width.matches);
   });
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const Records = ({ tasks, manageTaskStatus, deleteTask }) => {
     setOpenAccordionIndex((currentValue) =>
       currentValue === index ? null : index
     );
-    setCurrentPage(1)
+    setCurrentPage(1);
   };
 
   const handleForm = (task = null) => {
